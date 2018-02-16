@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour, IKillable
 {
 
+    public float life;
+
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private Animator anim;
@@ -16,6 +18,7 @@ public class Player : MonoBehaviour, IKillable
     private Dictionary<string, GameObject> spells;  // all the spells that was chosen by the player
 
     private bool isJumping = false;
+    private bool righe = false;
 
     public float autoVel;
 
@@ -50,16 +53,16 @@ public class Player : MonoBehaviour, IKillable
 
         if (anim.GetFloat("down") <= 0)
         {
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetAxisRaw("Horizontal") > 0.2f)
             {
-                rb.velocity = new Vector2(autoVel, rb.velocity.y);
+                rb.velocity = new Vector2(autoVel * Input.GetAxisRaw("Horizontal"), rb.velocity.y);
                 anim.SetFloat("walking", 2);
                 sr.flipX = false;
                 setRightCollider();
             }
-            else if (Input.GetKey(KeyCode.A))
+            else if (Input.GetAxisRaw("Horizontal") < -0.2f)
             {
-                rb.velocity = new Vector2(-autoVel, rb.velocity.y);
+                rb.velocity = new Vector2(autoVel * Input.GetAxisRaw("Horizontal"), rb.velocity.y);
                 anim.SetFloat("walking", 4);
                 sr.flipX = true;
                 setLeftCollider();
@@ -78,14 +81,14 @@ public class Player : MonoBehaviour, IKillable
         {
             if(anim.GetFloat("down") <= 0)
             {
-                if (Input.GetKeyDown(KeyCode.W))
+                if (Input.GetKeyDown(KeyCode.Joystick1Button0))
                 {
                     rb.velocity = new Vector2(this.GetComponent<Rigidbody2D>().velocity.x, 6f);
                     isJumping = true;
                 }
             }
 
-            if (Input.GetKey(KeyCode.S))
+            if (Input.GetAxisRaw("Vertical") < -0.95f)
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 anim.SetFloat("walking", 0);
@@ -93,7 +96,7 @@ public class Player : MonoBehaviour, IKillable
                 setDownCollider();
             }
 
-            else if (Input.GetKeyUp(KeyCode.S))
+            else if (Input.GetAxisRaw("Vertical") > -0.95f)
             {
                 anim.SetFloat("down", -1);
                 if (sr.flipX == false) { setRightCollider(); }
@@ -118,6 +121,7 @@ public class Player : MonoBehaviour, IKillable
         this.transform.GetChild(1).gameObject.SetActive(false);
         this.transform.GetChild(0).gameObject.SetActive(true);
         this.transform.GetChild(2).gameObject.SetActive(false);
+        righe = true;
     }
 
     void setLeftCollider()
@@ -125,15 +129,29 @@ public class Player : MonoBehaviour, IKillable
         this.transform.GetChild(1).gameObject.SetActive(true);
         this.transform.GetChild(0).gameObject.SetActive(false);
         this.transform.GetChild(2).gameObject.SetActive(false);
+        righe = false;
     }
 
     void CheckSpell()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Joystick1Button1))
         {
             GameObject s;
             spells.TryGetValue("Fireball", out s);
-            FireBall.Cast(this.transform.position, s);
+            FireBall.Cast(this.transform.position, Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), righe, s);
         }
+    }
+
+    public void Death()
+    {
+        if(life <= 0)
+        {
+            print("Death");
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        life -= damage;
     }
 }

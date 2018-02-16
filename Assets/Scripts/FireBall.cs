@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class FireBall : Spell, ISpell {
 
-	// Use this for initialization
 	void Start () {
         damage = 2f;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
     public float GetDamage()
@@ -19,12 +13,31 @@ public class FireBall : Spell, ISpell {
         return damage;
     }
 
-    public static void Cast(Vector3 pos, GameObject f)
+    public static void Cast(Vector3 pos, float axiX, float axiY, bool righe, GameObject f)
     {
-        GameObject fb = Instantiate(f, pos, Quaternion.identity);
-        Vector3 test = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 vel = new Vector3((test.x - pos.x), (test.y - pos.y), 1);
-        vel = Vector3.Normalize(vel);
-        fb.transform.GetComponent<Rigidbody2D>().velocity = vel * 8;
+        Vector2 vel = new Vector2((axiX), (axiY));
+        Vector3 extPos = new Vector3(axiX, axiY, 0);
+
+        if (righe && axiX == 0 && axiY == 0) { vel = Vector2.right; extPos = Vector3.right; }
+        else if (!righe && axiX == 0 && axiY == 0) { vel = Vector2.left; extPos = Vector3.left; }
+
+        GameObject fb = Instantiate(f, pos + extPos, Quaternion.identity);
+
+        vel.Normalize();
+
+        print(vel);
+
+        fb.transform.GetComponent<Rigidbody2D>().velocity = vel * 10;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        int playerLayer = 9;
+        int layer = 1 << playerLayer;
+        if (collision.IsTouchingLayers(layer))
+        {
+            collision.GetComponentInParent<Player>().TakeDamage(damage);
+            Destroy(this);
+        }
     }
 }
