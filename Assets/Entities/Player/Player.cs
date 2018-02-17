@@ -87,6 +87,7 @@ public class Player : MonoBehaviour, IKillable
                 if (Input.GetKeyDown(KeyCode.Joystick1Button0))
                 {
                     rb.velocity = new Vector2(this.GetComponent<Rigidbody2D>().velocity.x, 6f);
+                    anim.SetBool("jumping", true);
                     isJumping = true;
                 }
             }
@@ -109,6 +110,7 @@ public class Player : MonoBehaviour, IKillable
         if (rb.velocity.y == 0)
         {
             isJumping = false;
+            anim.SetBool("jumping", false);
         }
     }
 
@@ -141,7 +143,7 @@ public class Player : MonoBehaviour, IKillable
         {
             if(spellTime < Time.time)
             {
-                spellTime = Time.time + 1f;
+                spellTime = Time.time + 0.3f;
             }
         }
         if (Input.GetAxis("Horizontal") > 0.9f || Input.GetAxis("Horizontal") < -0.9f)
