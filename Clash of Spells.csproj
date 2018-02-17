@@ -298,9 +298,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Entities\Player\Player.cs" />
-    <Compile Include="Assets\IKillable.cs" />
     <Compile Include="Assets\Scripts\Fire.cs" />
     <Compile Include="Assets\Scripts\FireBall.cs" />
+    <Compile Include="Assets\Scripts\IKillable.cs" />
     <Compile Include="Assets\Scripts\ISpell.cs" />
     <Compile Include="Assets\Scripts\Spell.cs" />
   </ItemGroup>

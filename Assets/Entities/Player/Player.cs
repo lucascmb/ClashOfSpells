@@ -138,6 +138,7 @@ public class Player : MonoBehaviour, IKillable
         {
             GameObject s;
             spells.TryGetValue("Fireball", out s);
+            
             FireBall.Cast(this.transform.position, Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), righe, s);
         }
     }
