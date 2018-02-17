@@ -18,22 +18,16 @@ public class FireBall : Spell, ISpell {
         Vector2 vel = new Vector2((axiX), (axiY));
         Vector3 extPos = new Vector3(axiX, axiY, 0);
 
-        if (righe) { vel = Vector2.right; extPos = Vector3.right; }
-        else if (!righe) { vel = Vector2.left; extPos = Vector3.left; }
-
-        vel.Normalize();
-
-        //print(vel);
-
-        //float angle = vel.x / Mathf.Sqrt((Mathf.Pow(vel.x, 2) + Mathf.Pow(vel.y, 2)));
-        //angle = Mathf.Acos(angle);
-        //angle = Mathf.Rad2Deg * angle;
-
-        
-        GameObject fb = Instantiate(f, pos + extPos, Quaternion.identity);
-        fb.transform.GetComponent<Rigidbody2D>().velocity = vel * 10;
-      
-       
+        if (righe) {
+            vel = Vector2.right; extPos = Vector3.right;
+            GameObject fb = Instantiate(f, pos + extPos, Quaternion.identity);
+            fb.transform.GetComponent<Rigidbody2D>().velocity = vel * 10;
+        }
+        else if (!righe) {
+            vel = Vector2.left; extPos = Vector3.left;
+            GameObject fb = Instantiate(f, pos + extPos, Quaternion.Euler(0f, 0f, 180f));
+            fb.transform.GetComponent<Rigidbody2D>().velocity = vel * 10;
+        }       
     }
 
    /* private void OnTriggerEnter2D(Collider2D collision)

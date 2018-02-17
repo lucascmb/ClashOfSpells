@@ -144,15 +144,19 @@ public class Player : MonoBehaviour, IKillable
                 spellTime = Time.time + 1f;
             }
         }
-        if (Input.GetAxis("Horizontal") > 0.9f && spellTime > Time.time)
+        if (Input.GetAxis("Horizontal") > 0.9f || Input.GetAxis("Horizontal") < -0.9f)
         {
-            push = true;
+            if(spellTime > Time.time)
+            {
+                push = true;
+            }
         }
         if (Input.GetKeyDown(KeyCode.Joystick1Button1) && spellTime > Time.time && push)
         {
             GameObject s;
             spells.TryGetValue("Fireball", out s);
             push = false;
+            spellTime = 0f;
 
             FireBall.Cast(this.transform.position, Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), righe, s);
         }
