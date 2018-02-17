@@ -18,27 +18,22 @@ public class FireBall : Spell, ISpell {
         Vector2 vel = new Vector2((axiX), (axiY));
         Vector3 extPos = new Vector3(axiX, axiY, 0);
 
-        if (righe && axiX == 0 && axiY == 0) { vel = Vector2.right; extPos = Vector3.right; }
-        else if (!righe && axiX == 0 && axiY == 0) { vel = Vector2.left; extPos = Vector3.left; }
+        if (righe) { vel = Vector2.right; extPos = Vector3.right; }
+        else if (!righe) { vel = Vector2.left; extPos = Vector3.left; }
 
         vel.Normalize();
 
-        print(vel);
+        //print(vel);
 
-        float angle = vel.x / Mathf.Sqrt((Mathf.Pow(vel.x, 2) + Mathf.Pow(vel.y, 2)));
-        angle = Mathf.Acos(angle);
-        angle = Mathf.Rad2Deg * angle;
+        //float angle = vel.x / Mathf.Sqrt((Mathf.Pow(vel.x, 2) + Mathf.Pow(vel.y, 2)));
+        //angle = Mathf.Acos(angle);
+        //angle = Mathf.Rad2Deg * angle;
 
-        if(axiY < 0)
-        {
-            GameObject fb = Instantiate(f, pos + extPos, Quaternion.Euler(180f, 0f, angle));
-            fb.transform.GetComponent<Rigidbody2D>().velocity = vel * 10;
-        }
-        else
-        {
-            GameObject fb = Instantiate(f, pos + extPos, Quaternion.Euler(0f, 0f, angle));
-            fb.transform.GetComponent<Rigidbody2D>().velocity = vel * 10;
-        }
+        
+        GameObject fb = Instantiate(f, pos + extPos, Quaternion.identity);
+        fb.transform.GetComponent<Rigidbody2D>().velocity = vel * 10;
+      
+       
     }
 
    /* private void OnTriggerEnter2D(Collider2D collision)

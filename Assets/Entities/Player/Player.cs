@@ -7,6 +7,9 @@ public class Player : MonoBehaviour, IKillable
 
     public float life;
 
+    private float spellTime = 0f;
+    private bool push = false;
+
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private Animator anim;
@@ -134,11 +137,23 @@ public class Player : MonoBehaviour, IKillable
 
     void CheckSpell()
     {
-        if (Input.GetKeyDown(KeyCode.Joystick1Button1))
+        if (Input.GetAxis("Vertical") < -0.9f)
+        {
+            if(spellTime < Time.time)
+            {
+                spellTime = Time.time + 1f;
+            }
+        }
+        if (Input.GetAxis("Horizontal") > 0.9f && spellTime > Time.time)
+        {
+            push = true;
+        }
+        if (Input.GetKeyDown(KeyCode.Joystick1Button1) && spellTime > Time.time && push)
         {
             GameObject s;
             spells.TryGetValue("Fireball", out s);
-            
+            push = false;
+
             FireBall.Cast(this.transform.position, Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), righe, s);
         }
     }
