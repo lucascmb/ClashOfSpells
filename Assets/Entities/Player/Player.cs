@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IKillable
+public class Player : PlayerBehaviour, IKillable
 {
 
-    public float life;
 
     private float spellTime = 0f;
     private bool push = false;
@@ -14,14 +13,12 @@ public class Player : MonoBehaviour, IKillable
     private SpriteRenderer sr;
     private Animator anim;
 
-    private PolygonCollider2D col;
-
     public GameObject [] spellSet;  // all the spells available in the game
 
     private Dictionary<string, GameObject> spells;  // all the spells that was chosen by the player
 
     private bool isJumping = false;
-    private bool righe = false;
+    private bool isFalling = false;
 
     public float autoVel;
 
@@ -42,7 +39,6 @@ public class Player : MonoBehaviour, IKillable
         rb = this.GetComponent<Rigidbody2D>();
         sr = this.GetComponent<SpriteRenderer>();
         anim = this.GetComponent<Animator>();
-        col = this.GetComponent<PolygonCollider2D>();
     }
 
     void Update()
@@ -107,46 +103,48 @@ public class Player : MonoBehaviour, IKillable
                 else { setLeftCollider(); }
             }
         }
-        if (rb.velocity.y == 0)
+        if (rb.velocity.y < -2f)
+        {
+            isFalling = true;
+            anim.SetBool("falling", true);
+        }
+        else if (rb.velocity.y == 0)
         {
             isJumping = false;
+            isFalling = false;
             anim.SetBool("jumping", false);
+            anim.SetBool("falling", false);
+        }
+   
+        if (isFalling)
+        {
+            if(rb.velocity.y > -0.5f)
+            {
+                isJumping = false;
+                isFalling = false;
+                anim.SetBool("jumping", false);
+                anim.SetBool("falling", false);
+            }
         }
     }
 
-    void setDownCollider()
+    void setFalling()
     {
-        this.transform.GetChild(1).gameObject.SetActive(false);
-        this.transform.GetChild(0).gameObject.SetActive(false);
-        this.transform.GetChild(2).gameObject.SetActive(true);
+        anim.SetBool("falling", true);
     }
 
-    void setRightCollider()
-    {
-        this.transform.GetChild(1).gameObject.SetActive(false);
-        this.transform.GetChild(0).gameObject.SetActive(true);
-        this.transform.GetChild(2).gameObject.SetActive(false);
-        righe = true;
-    }
 
-    void setLeftCollider()
-    {
-        this.transform.GetChild(1).gameObject.SetActive(true);
-        this.transform.GetChild(0).gameObject.SetActive(false);
-        this.transform.GetChild(2).gameObject.SetActive(false);
-        righe = false;
-    }
 
     void CheckSpell()
     {
-        if (Input.GetAxis("Vertical") < -0.9f)
+        if (Input.GetAxis("Vertical") < -0.95f)
         {
             if(spellTime < Time.time)
             {
                 spellTime = Time.time + 0.3f;
             }
         }
-        if (Input.GetAxis("Horizontal") > 0.9f || Input.GetAxis("Horizontal") < -0.9f)
+        if (Input.GetAxis("Horizontal") > 0.95f || Input.GetAxis("Horizontal") < -0.95f)
         {
             if(spellTime > Time.time)
             {
