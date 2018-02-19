@@ -8,6 +8,8 @@ public class Player : PlayerBehaviour, IKillable
 
     private float spellTime = 0f;
     private bool push = false;
+    private bool dashing = false;
+    private float dashValue;
 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
@@ -21,6 +23,7 @@ public class Player : PlayerBehaviour, IKillable
     private bool isFalling = false;
 
     public float autoVel;
+    public float dashSpeed = 2f;
 
     void Start()
     {
@@ -48,30 +51,63 @@ public class Player : PlayerBehaviour, IKillable
         CheckSpell();
     }
 
-    void HorizontalMovement() {
+    void HorizontalMovement()
+    {
 
         if (anim.GetFloat("down") <= 0)
         {
-            if (Input.GetAxisRaw("Horizontal") > 0.2f)
+            if (Input.GetAxisRaw("Horizontal") > 0.2f && !dashing)
             {
                 rb.velocity = new Vector2(autoVel * Input.GetAxisRaw("Horizontal"), rb.velocity.y);
                 anim.SetFloat("walking", 2);
                 sr.flipX = false;
                 setRightCollider();
             }
-            else if (Input.GetAxisRaw("Horizontal") < -0.2f)
+            else if (Input.GetAxisRaw("Horizontal") < -0.2f && !dashing)
             {
                 rb.velocity = new Vector2(autoVel * Input.GetAxisRaw("Horizontal"), rb.velocity.y);
                 anim.SetFloat("walking", 4);
                 sr.flipX = true;
                 setLeftCollider();
             }
-            else
+            else if (!dashing)
             {
-                rb.velocity = new Vector2(0, rb.velocity.y);
-                anim.SetFloat("walking", 0);
+                Stop();
+            }
+            if (Input.GetKeyDown(KeyCode.Joystick1Button5))
+            {
+                StartCoroutine("Dashing");
             }
         }
+    }
+
+    IEnumerator Dashing()
+    {
+        if (!dashing)
+        {
+            dashing = true;
+            dashValue = Time.time + dashSpeed;
+            dashValue = dashValue - Time.time;
+            if (righe)
+            {
+                rb.velocity = new Vector2(autoVel * dashValue * 2, rb.velocity.y);
+            } else
+            {
+                rb.velocity = new Vector2(autoVel * dashValue * (-2), rb.velocity.y);
+            }
+        }
+        yield return new WaitForSeconds(.1f);
+        Stop();
+    }
+
+    void Stop()
+    {
+        if (dashing)
+        {
+            dashing = false;
+        }
+        rb.velocity = new Vector2(0, rb.velocity.y);
+        anim.SetFloat("walking", 0);
     }
 
     void VerticalMovement()
