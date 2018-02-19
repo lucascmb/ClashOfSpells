@@ -8,6 +8,8 @@ public class Player : PlayerBehaviour, IKillable
 
     private float spellTime = 0f;
     private bool push = false;
+    private bool dashing = false;
+    private float dashValue;
 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
@@ -52,24 +54,46 @@ public class Player : PlayerBehaviour, IKillable
 
         if (anim.GetFloat("down") <= 0)
         {
-            if (Input.GetAxisRaw("Horizontal") > 0.2f)
+            if (Input.GetAxisRaw("Horizontal") > 0.2f && !dashing)
             {
                 rb.velocity = new Vector2(autoVel * Input.GetAxisRaw("Horizontal"), rb.velocity.y);
                 anim.SetFloat("walking", 2);
                 sr.flipX = false;
                 setRightCollider();
             }
-            else if (Input.GetAxisRaw("Horizontal") < -0.2f)
+            else if (Input.GetAxisRaw("Horizontal") < -0.2f && !dashing)
             {
                 rb.velocity = new Vector2(autoVel * Input.GetAxisRaw("Horizontal"), rb.velocity.y);
                 anim.SetFloat("walking", 4);
                 sr.flipX = true;
                 setLeftCollider();
             }
-            else
+            else if (!dashing) 
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 anim.SetFloat("walking", 0);
+            }
+            if (Input.GetKeyDown(KeyCode.Joystick1Button2) || dashing)
+            {
+                Dashing();
+            }
+        }
+    }
+
+    void Dashing()
+    {
+        if (!dashing)
+        {
+            dashing = true;
+            dashValue = Time.time + 8f;
+        }
+        else
+        {
+            dashValue = dashValue - Time.time;
+            rb.velocity = new Vector2(dashValue * autoVel, rb.velocity.y);
+            if (dashValue < Time.time)
+            {
+                dashing = false;
             }
         }
     }
@@ -132,8 +156,6 @@ public class Player : PlayerBehaviour, IKillable
     {
         anim.SetBool("falling", true);
     }
-
-
 
     void CheckSpell()
     {
