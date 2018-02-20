@@ -120,11 +120,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 60061289189764334, guid: e0a4eea0aed629a4dbb3dcd87f3e3ecd,
-        type: 2}
-      propertyPath: m_Points.m_Paths.Array.data[1].Array.size
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4210399440299122, guid: e0a4eea0aed629a4dbb3dcd87f3e3ecd, type: 2}
       propertyPath: m_LocalPosition.x
       value: -2.8484457
@@ -157,6 +152,7 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+<<<<<<< HEAD
     - target: {fileID: 60061289189764334, guid: e0a4eea0aed629a4dbb3dcd87f3e3ecd,
         type: 2}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[13].x
@@ -592,6 +588,11 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.64968586, y: 0.8483183}
   m_EdgeRadius: 0
+=======
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: e0a4eea0aed629a4dbb3dcd87f3e3ecd, type: 2}
+  m_IsPrefabParent: 0
+>>>>>>> dashing
 --- !u!1001 &1853073695
 Prefab:
   m_ObjectHideFlags: 0
