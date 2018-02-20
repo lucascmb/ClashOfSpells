@@ -79,14 +79,16 @@ public class Player : PlayerBehaviour, IKillable
             {
                 Stop();
             }
-            if (Input.GetKeyDown(KeyCode.Joystick1Button5) && Time.time > dashCoolDown)
+            if (Input.GetKeyDown(KeyCode.Joystick1Button5) && Time.time > dashCoolDown && !attacking)
             {
                 dashCoolDown = Time.time + 2f;
+                anim.SetBool("dashing", true);
                 StartCoroutine(Dashing(true));
             }
-            else if (Input.GetKeyDown(KeyCode.Joystick1Button4) && Time.time > dashCoolDown)
+            else if (Input.GetKeyDown(KeyCode.Joystick1Button4) && Time.time > dashCoolDown && !attacking)
             {
                 dashCoolDown = Time.time + 2f;
+                anim.SetBool("dashing", true);
                 StartCoroutine(Dashing(false));
             }
         }
@@ -109,7 +111,7 @@ public class Player : PlayerBehaviour, IKillable
                 rb.velocity = new Vector2(autoVel * dashValue * (-2), rb.velocity.y);
             }
         }
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.4f);
         Stop();
     }
 
@@ -118,6 +120,7 @@ public class Player : PlayerBehaviour, IKillable
         if (dashing)
         {
             dashing = false;
+            anim.SetBool("dashing", false);
         }
         rb.velocity = new Vector2(0, rb.velocity.y);
         anim.SetFloat("walking", 0);
