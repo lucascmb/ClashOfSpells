@@ -9,6 +9,8 @@ public class Player : PlayerBehaviour, IKillable
     private float spellTime = 0f;
     private bool push = false;
     private bool dashing = false;
+
+    private float dashCoolDown;
     private float dashValue;
 
     private Rigidbody2D rb;
@@ -23,6 +25,7 @@ public class Player : PlayerBehaviour, IKillable
     private bool isFalling = false;
 
     public float autoVel;
+    public float dashSpeed = 2f;
 
     void Start()
     {
@@ -50,7 +53,8 @@ public class Player : PlayerBehaviour, IKillable
         CheckSpell();
     }
 
-    void HorizontalMovement() {
+    void HorizontalMovement()
+    {
 
         if (anim.GetFloat("down") <= 0)
         {
@@ -68,34 +72,50 @@ public class Player : PlayerBehaviour, IKillable
                 sr.flipX = true;
                 setLeftCollider();
             }
-            else if (!dashing) 
+            else if (!dashing)
             {
-                rb.velocity = new Vector2(0, rb.velocity.y);
-                anim.SetFloat("walking", 0);
+                Stop();
             }
-            if (Input.GetKeyDown(KeyCode.Joystick1Button2) || dashing)
+            if (Input.GetKeyDown(KeyCode.Joystick1Button5) && Time.time > dashCoolDown)
             {
-                Dashing();
+                dashCoolDown = Time.time + 2f;
+                StartCoroutine(Dashing(true));
+            }
+            else if (Input.GetKeyDown(KeyCode.Joystick1Button4) && Time.time > dashCoolDown)
+            {
+                dashCoolDown = Time.time + 2f;
+                StartCoroutine(Dashing(false));
             }
         }
     }
 
-    void Dashing()
+    IEnumerator Dashing(bool right)
     {
         if (!dashing)
         {
             dashing = true;
-            dashValue = Time.time + 8f;
-        }
-        else
-        {
+            dashValue = Time.time + dashSpeed;
             dashValue = dashValue - Time.time;
-            rb.velocity = new Vector2(dashValue * autoVel, rb.velocity.y);
-            if (dashValue < Time.time)
+            if (right)
             {
-                dashing = false;
+                rb.velocity = new Vector2(autoVel * dashValue * 2, rb.velocity.y);
+            } else
+            {
+                rb.velocity = new Vector2(autoVel * dashValue * (-2), rb.velocity.y);
             }
         }
+        yield return new WaitForSeconds(.1f);
+        Stop();
+    }
+
+    void Stop()
+    {
+        if (dashing)
+        {
+            dashing = false;
+        }
+        rb.velocity = new Vector2(0, rb.velocity.y);
+        anim.SetFloat("walking", 0);
     }
 
     void VerticalMovement()
@@ -108,7 +128,9 @@ public class Player : PlayerBehaviour, IKillable
                 {
                     rb.velocity = new Vector2(this.GetComponent<Rigidbody2D>().velocity.x, 6f);
                     anim.SetBool("jumping", true);
+                    anim.SetBool("falling", false);
                     isJumping = true;
+                    isFalling = false;
                 }
             }
 
@@ -127,27 +149,29 @@ public class Player : PlayerBehaviour, IKillable
                 else { setLeftCollider(); }
             }
         }
-        if (rb.velocity.y < -2f)
+        if (!isJumping)
         {
-            isFalling = true;
-            anim.SetBool("falling", true);
-        }
-        else if (rb.velocity.y == 0)
-        {
-            isJumping = false;
-            isFalling = false;
-            anim.SetBool("jumping", false);
-            anim.SetBool("falling", false);
-        }
-   
-        if (isFalling)
-        {
-            if(rb.velocity.y > -0.5f)
+            if (rb.velocity.y < -2f)
             {
-                isJumping = false;
+                isFalling = true;
+                anim.SetBool("falling", true);
+            }
+        }
+        else
+        {
+            if (rb.velocity.y < -0.2f)
+            {
+                isFalling = true;
+                anim.SetBool("falling", true);
+            }
+        }
+        if (isFalling) { 
+            if (rb.velocity.y > -0.2f)
+            {
                 isFalling = false;
-                anim.SetBool("jumping", false);
+                isJumping = false;
                 anim.SetBool("falling", false);
+                anim.SetBool("jumping", false);
             }
         }
     }
@@ -156,6 +180,8 @@ public class Player : PlayerBehaviour, IKillable
     {
         anim.SetBool("falling", true);
     }
+
+
 
     void CheckSpell()
     {
