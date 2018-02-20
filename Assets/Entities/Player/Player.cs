@@ -9,6 +9,11 @@ public class Player : PlayerBehaviour, IKillable
     private float spellTime = 0f;
     private bool push = false;
     private bool dashing = false;
+<<<<<<< HEAD
+=======
+
+    private float dashCoolDown;
+>>>>>>> dashing
     private float dashValue;
 
     private Rigidbody2D rb;
@@ -74,21 +79,41 @@ public class Player : PlayerBehaviour, IKillable
             {
                 Stop();
             }
+<<<<<<< HEAD
             if (Input.GetKeyDown(KeyCode.Joystick1Button5))
             {
                 StartCoroutine("Dashing");
+=======
+            if (Input.GetKeyDown(KeyCode.Joystick1Button5) && Time.time > dashCoolDown)
+            {
+                dashCoolDown = Time.time + 2f;
+                StartCoroutine(Dashing(true));
+            }
+            else if (Input.GetKeyDown(KeyCode.Joystick1Button4) && Time.time > dashCoolDown)
+            {
+                dashCoolDown = Time.time + 2f;
+                StartCoroutine(Dashing(false));
+>>>>>>> dashing
             }
         }
     }
 
+<<<<<<< HEAD
     IEnumerator Dashing()
+=======
+    IEnumerator Dashing(bool right)
+>>>>>>> dashing
     {
         if (!dashing)
         {
             dashing = true;
             dashValue = Time.time + dashSpeed;
             dashValue = dashValue - Time.time;
+<<<<<<< HEAD
             if (righe)
+=======
+            if (right)
+>>>>>>> dashing
             {
                 rb.velocity = new Vector2(autoVel * dashValue * 2, rb.velocity.y);
             } else
@@ -120,7 +145,9 @@ public class Player : PlayerBehaviour, IKillable
                 {
                     rb.velocity = new Vector2(this.GetComponent<Rigidbody2D>().velocity.x, 6f);
                     anim.SetBool("jumping", true);
+                    anim.SetBool("falling", false);
                     isJumping = true;
+                    isFalling = false;
                 }
             }
 
@@ -139,27 +166,29 @@ public class Player : PlayerBehaviour, IKillable
                 else { setLeftCollider(); }
             }
         }
-        if (rb.velocity.y < -2f)
+        if (!isJumping)
         {
-            isFalling = true;
-            anim.SetBool("falling", true);
-        }
-        else if (rb.velocity.y == 0)
-        {
-            isJumping = false;
-            isFalling = false;
-            anim.SetBool("jumping", false);
-            anim.SetBool("falling", false);
-        }
-   
-        if (isFalling)
-        {
-            if(rb.velocity.y > -0.5f)
+            if (rb.velocity.y < -2f)
             {
-                isJumping = false;
+                isFalling = true;
+                anim.SetBool("falling", true);
+            }
+        }
+        else
+        {
+            if (rb.velocity.y < -0.2f)
+            {
+                isFalling = true;
+                anim.SetBool("falling", true);
+            }
+        }
+        if (isFalling) { 
+            if (rb.velocity.y > -0.2f)
+            {
                 isFalling = false;
-                anim.SetBool("jumping", false);
+                isJumping = false;
                 anim.SetBool("falling", false);
+                anim.SetBool("jumping", false);
             }
         }
     }
