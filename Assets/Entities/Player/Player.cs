@@ -7,6 +7,8 @@ public class Player : PlayerBehaviour, IKillable
 
 
     private float spellTime = 0f;
+
+    private bool attacking = false;
     private bool push = false;
     private bool dashing = false;
 
@@ -51,6 +53,7 @@ public class Player : PlayerBehaviour, IKillable
         HorizontalMovement();
         VerticalMovement();
         CheckSpell();
+        Attack();
     }
 
     void HorizontalMovement()
@@ -201,7 +204,7 @@ public class Player : PlayerBehaviour, IKillable
                 push = true;
             }
         }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button1) && spellTime > Time.time && push)
+        if (Input.GetKeyDown(KeyCode.Joystick1Button1) && spellTime > Time.time && push && !attacking)
         {
             GameObject s;
             spells.TryGetValue("Fireball", out s);
@@ -210,6 +213,21 @@ public class Player : PlayerBehaviour, IKillable
 
             FireBall.Cast(this.transform.position, Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), righe, s);
         }
+    }
+
+    void Attack()
+    {
+        if (Input.GetKeyDown(KeyCode.Joystick1Button2) && anim.GetFloat("down") <= 0)
+        {
+            attacking = true;
+            anim.SetBool("attacking", true);
+        }
+    }
+
+    void SetAttackOff()
+    {
+        attacking = false;
+        anim.SetBool("attacking", false);
     }
 
     public void Death()
