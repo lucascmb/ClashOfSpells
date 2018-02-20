@@ -9,11 +9,8 @@ public class Player : PlayerBehaviour, IKillable
     private float spellTime = 0f;
     private bool push = false;
     private bool dashing = false;
-<<<<<<< HEAD
-=======
 
     private float dashCoolDown;
->>>>>>> dashing
     private float dashValue;
 
     private Rigidbody2D rb;
@@ -79,11 +76,6 @@ public class Player : PlayerBehaviour, IKillable
             {
                 Stop();
             }
-<<<<<<< HEAD
-            if (Input.GetKeyDown(KeyCode.Joystick1Button5))
-            {
-                StartCoroutine("Dashing");
-=======
             if (Input.GetKeyDown(KeyCode.Joystick1Button5) && Time.time > dashCoolDown)
             {
                 dashCoolDown = Time.time + 2f;
@@ -93,27 +85,20 @@ public class Player : PlayerBehaviour, IKillable
             {
                 dashCoolDown = Time.time + 2f;
                 StartCoroutine(Dashing(false));
->>>>>>> dashing
             }
         }
     }
 
-<<<<<<< HEAD
-    IEnumerator Dashing()
-=======
+
     IEnumerator Dashing(bool right)
->>>>>>> dashing
     {
         if (!dashing)
         {
             dashing = true;
             dashValue = Time.time + dashSpeed;
             dashValue = dashValue - Time.time;
-<<<<<<< HEAD
-            if (righe)
-=======
+
             if (right)
->>>>>>> dashing
             {
                 rb.velocity = new Vector2(autoVel * dashValue * 2, rb.velocity.y);
             } else
