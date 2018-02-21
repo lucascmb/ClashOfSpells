@@ -224,6 +224,13 @@ public class Player : PlayerBehaviour, IKillable
         {
             attacking = true;
             anim.SetBool("attacking", true);
+            if (righe)
+            {
+                this.transform.GetChild(3).gameObject.SetActive(true);
+            }else
+            {
+                this.transform.GetChild(4).gameObject.SetActive(true);
+            }
         }
     }
 
@@ -231,6 +238,13 @@ public class Player : PlayerBehaviour, IKillable
     {
         attacking = false;
         anim.SetBool("attacking", false);
+        if (this.transform.GetChild(3).gameObject.activeSelf)
+        {
+            this.transform.GetChild(3).gameObject.SetActive(false);
+        } else if (this.transform.GetChild(4).gameObject.activeSelf)
+        {
+            this.transform.GetChild(4).gameObject.SetActive(false);
+        }
     }
 
     public void Death()
