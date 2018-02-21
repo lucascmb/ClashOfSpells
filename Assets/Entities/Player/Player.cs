@@ -254,4 +254,9 @@ public class Player : PlayerBehaviour, IKillable
     {
         return meleeDamage;
     }
+
+    public void Recoil(Vector2 force)
+    {
+        //
+    }
 }

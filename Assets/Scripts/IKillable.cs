@@ -6,5 +6,6 @@ public interface IKillable {
 
     void Death();
     void TakeDamage(float damage);
+    void Recoil(Vector2 force);
 
 }

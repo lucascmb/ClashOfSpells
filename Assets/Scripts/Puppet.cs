@@ -20,6 +20,23 @@ public class Puppet : MonoBehaviour, IKillable
         }
 	}
 
+    public void Recoil(Vector2 force)
+    {
+        StartCoroutine(PushBack(force));
+    }
+
+    IEnumerator PushBack(Vector2 force)
+    {
+        this.GetComponent<Rigidbody2D>().AddForce(force);
+        yield return new WaitForSeconds(.2f);
+        Stop();
+    }
+
+    private void Stop()
+    {
+        this.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, this.GetComponent<Rigidbody2D>().velocity.y);
+    }
+
     public void Death()
     {
         Destroy(this.gameObject);
