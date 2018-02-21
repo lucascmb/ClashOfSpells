@@ -6,28 +6,27 @@ public class Player : PlayerBehaviour, IKillable
 {
 
 
-    private float spellTime = 0f;
+    private bool attacking = false; // a boolean to check if the player is attacking or not
+    private bool dashing = false; // a boolean to check if the player is dashing or not
+    private bool isJumping = false; // a boolean to check if the player is jumping or not
+    private bool isFalling = false; // a boolean to check if the player is falling or not
+    private bool push = false; // a boolean to check if the player is in time to next action in order to cast the fireball
 
-    private bool attacking = false;
-    private bool push = false;
-    private bool dashing = false;
+    private float dashCoolDown; // the cooldown's value for the dash
+    private float dashValue; // the dash speed value
+    private float spellTime = 0f; // the time that the player has end the spell casting from the beginning of it casts;
 
-    private float dashCoolDown;
-    private float dashValue;
-
-    private Rigidbody2D rb;
-    private SpriteRenderer sr;
-    private Animator anim;
+    private Rigidbody2D rb; // player's rigidibody
+    private SpriteRenderer sr; // player's sprite rendering
+    private Animator anim; // player's animator
 
     public GameObject [] spellSet;  // all the spells available in the game
-
     private Dictionary<string, GameObject> spells;  // all the spells that was chosen by the player
 
-    private bool isJumping = false;
-    private bool isFalling = false;
+    public float autoVel; // the maximum velocity that the player can reach just walking
+    public float dashSpeed = 2f; // the multiplier from dash
 
-    public float autoVel;
-    public float dashSpeed = 2f;
+    public float meleeDamage = 2f; // the damage that the player do when it is attacking with its sword;
 
     void Start()
     {
@@ -79,23 +78,19 @@ public class Player : PlayerBehaviour, IKillable
             {
                 Stop();
             }
-            if (Input.GetKeyDown(KeyCode.Joystick1Button5) && Time.time > dashCoolDown && !attacking)
+            if ((Input.GetKeyDown(KeyCode.Joystick1Button5) || Input.GetKeyDown(KeyCode.Joystick1Button4)) && 
+                Time.time > dashCoolDown && 
+                !attacking)
             {
                 dashCoolDown = Time.time + 2f;
                 anim.SetBool("dashing", true);
-                StartCoroutine(Dashing(true));
-            }
-            else if (Input.GetKeyDown(KeyCode.Joystick1Button4) && Time.time > dashCoolDown && !attacking)
-            {
-                dashCoolDown = Time.time + 2f;
-                anim.SetBool("dashing", true);
-                StartCoroutine(Dashing(false));
+                StartCoroutine(Dashing());
             }
         }
     }
 
 
-    IEnumerator Dashing(bool right)
+    IEnumerator Dashing()
     {
         if (!dashing)
         {
@@ -105,7 +100,6 @@ public class Player : PlayerBehaviour, IKillable
 
             Vector2 mov = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             mov.Normalize();
-            print(mov);
             rb.velocity = mov * dashValue * autoVel;
         }
         yield return new WaitForSeconds(.4f);
@@ -118,6 +112,7 @@ public class Player : PlayerBehaviour, IKillable
         {
             dashing = false;
             anim.SetBool("dashing", false);
+            rb.velocity = new Vector2(0, 0);
         }
         rb.velocity = new Vector2(0, rb.velocity.y);
         anim.SetFloat("walking", 0);
@@ -186,8 +181,6 @@ public class Player : PlayerBehaviour, IKillable
         anim.SetBool("falling", true);
     }
 
-
-
     void CheckSpell()
     {
         if (Input.GetAxis("Vertical") < -0.95f)
@@ -255,5 +248,10 @@ public class Player : PlayerBehaviour, IKillable
     public void TakeDamage(float damage)
     {
         life -= damage;
+    }
+
+    public float GetMeleeDamage()
+    {
+        return meleeDamage;
     }
 }

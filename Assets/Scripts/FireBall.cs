@@ -5,7 +5,7 @@ using UnityEngine;
 public class FireBall : Spell, ISpell {
 
 	void Start () {
-        damage = 2f;
+        damage = 10f;
 	}
 
     public float GetDamage()
@@ -30,14 +30,14 @@ public class FireBall : Spell, ISpell {
         }       
     }
 
-   /* private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         int playerLayer = 9;
         int layer = 1 << playerLayer;
         if (collision.IsTouchingLayers(layer))
         {
-            collision.GetComponentInParent<Player>().TakeDamage(damage);
-            //Destroy(this);
+            collision.GetComponentInParent<IKillable>().TakeDamage(damage);
+            Destroy(this.gameObject);
         }
-    }*/
+    }
 }

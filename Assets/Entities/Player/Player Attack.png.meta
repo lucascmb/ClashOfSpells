@@ -1,14 +1,12 @@
 fileFormatVersion: 2
-guid: f966c81435007094383e436d8ee71bd8
-timeCreated: 1519172902
+guid: 21984b7fddc563748900b57dc45e1bb6
+timeCreated: 1519176996
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: ataque01_0
-    21300002: ataque01_1
-    21300004: ataque01_2
-    21300006: ataque01_3
-    21300008: ataque01_4
+    21300000: ataque01corrigido (1)_0
+    21300002: ataque01corrigido (1)_1
+    21300004: ataque01corrigido (1)_2
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -115,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ataque01_0
+      name: ataque01corrigido (1)_0
       rect:
         serializedVersion: 2
-        x: 94
-        y: 66
-        width: 469
-        height: 558
+        x: 579
+        y: 22
+        width: 544
+        height: 647
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -129,43 +127,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: ataque01_1
+      name: ataque01corrigido (1)_1
       rect:
         serializedVersion: 2
-        x: 816
-        y: 85
-        width: 929
-        height: 584
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1748
+        y: 15
+        width: 1060
+        height: 703
+      alignment: 9
+      pivot: {x: 0.3, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: ataque01_2
+      name: ataque01corrigido (1)_2
       rect:
         serializedVersion: 2
-        x: 1760
-        y: 85
-        width: 785
-        height: 584
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: ataque01_4
-      rect:
-        serializedVersion: 2
-        x: 1286
-        y: 26
-        width: 6
-        height: 4
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 3752
+        y: 22
+        width: 902
+        height: 686
+      alignment: 9
+      pivot: {x: 0.3, y: 0.49999997}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
