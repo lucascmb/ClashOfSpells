@@ -155,7 +155,7 @@ Prefab:
     - target: {fileID: 114242202595698874, guid: e0a4eea0aed629a4dbb3dcd87f3e3ecd,
         type: 2}
       propertyPath: dashSpeed
-      value: 1
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 212436271946000496, guid: e0a4eea0aed629a4dbb3dcd87f3e3ecd,
         type: 2}

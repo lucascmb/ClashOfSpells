@@ -103,13 +103,10 @@ public class Player : PlayerBehaviour, IKillable
             dashValue = Time.time + dashSpeed;
             dashValue = dashValue - Time.time;
 
-            if (right)
-            {
-                rb.velocity = new Vector2(autoVel * dashValue * 2, rb.velocity.y);
-            } else
-            {
-                rb.velocity = new Vector2(autoVel * dashValue * (-2), rb.velocity.y);
-            }
+            Vector2 mov = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            mov.Normalize();
+            print(mov);
+            rb.velocity = mov * dashValue * autoVel;
         }
         yield return new WaitForSeconds(.4f);
         Stop();
@@ -220,7 +217,7 @@ public class Player : PlayerBehaviour, IKillable
 
     void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Joystick1Button2) && anim.GetFloat("down") <= 0)
+        if (Input.GetKeyDown(KeyCode.Joystick1Button2) && anim.GetFloat("down") <= 0 && !dashing)
         {
             attacking = true;
             anim.SetBool("attacking", true);
