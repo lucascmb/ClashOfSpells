@@ -5,5 +5,6 @@ using UnityEngine;
 public interface ISpell {
 
     float GetDamage();
+    string GetName();
 
 }

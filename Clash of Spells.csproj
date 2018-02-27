@@ -297,15 +297,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Card.cs" />
+    <Compile Include="Assets\Cards.cs" />
     <Compile Include="Assets\Entities\Player\Player.cs" />
+    <Compile Include="Assets\Land.cs" />
+    <Compile Include="Assets\MenuController.cs" />
     <Compile Include="Assets\Scripts\Fire.cs" />
     <Compile Include="Assets\Scripts\FireBall.cs" />
+    <Compile Include="Assets\Scripts\IElements.cs" />
     <Compile Include="Assets\Scripts\IKillable.cs" />
     <Compile Include="Assets\Scripts\ISpell.cs" />
     <Compile Include="Assets\Scripts\PlayerAttackTrigger.cs" />
     <Compile Include="Assets\Scripts\PlayerBehaviour.cs" />
     <Compile Include="Assets\Scripts\Puppet.cs" />
     <Compile Include="Assets\Scripts\Spell.cs" />
+    <Compile Include="Assets\SpellSet.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

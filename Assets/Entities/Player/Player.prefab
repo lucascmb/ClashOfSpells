@@ -135,7 +135,7 @@ Transform:
   m_GameObject: {fileID: 1817940485600002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.827, y: 1.425, z: 2}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalScale: {x: 0.79999995, y: 0.80000013, z: 1}
   m_Children:
   - {fileID: 4210883484125948}
   - {fileID: 4565588972784240}
@@ -440,11 +440,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   life: 0
-  damage: 2
   spellSet:
   - {fileID: 1235328834360052, guid: 6ce6aa3a2c7ae344795bcae67c31e9bd, type: 2}
   autoVel: 4
   dashSpeed: 2.5
+  meleeDamage: 2
 --- !u!114 &114496883314220488
 MonoBehaviour:
   m_ObjectHideFlags: 1

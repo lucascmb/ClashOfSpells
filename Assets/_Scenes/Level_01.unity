@@ -185,11 +185,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4210399440299122, guid: e0a4eea0aed629a4dbb3dcd87f3e3ecd, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2.827
+      value: -3.1
       objectReference: {fileID: 0}
     - target: {fileID: 4210399440299122, guid: e0a4eea0aed629a4dbb3dcd87f3e3ecd, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1.425
+      value: 2.1
       objectReference: {fileID: 0}
     - target: {fileID: 4210399440299122, guid: e0a4eea0aed629a4dbb3dcd87f3e3ecd, type: 2}
       propertyPath: m_LocalPosition.z
@@ -215,9 +215,62 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4210399440299122, guid: e0a4eea0aed629a4dbb3dcd87f3e3ecd, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4210399440299122, guid: e0a4eea0aed629a4dbb3dcd87f3e3ecd, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.8000001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0a4eea0aed629a4dbb3dcd87f3e3ecd, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &618209543
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 618209544}
+  - component: {fileID: 618209545}
+  m_Layer: 8
+  m_Name: SpellSet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &618209544
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 618209543}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 715412656}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &618209545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 618209543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce5941f9a17d7f647a03d598f2c19995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &715412656 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4210399440299122, guid: e0a4eea0aed629a4dbb3dcd87f3e3ecd,
+    type: 2}
+  m_PrefabInternal: {fileID: 584121159}
 --- !u!1 &915355586 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1063178228020302, guid: 6a25cd32758c6bc429549f2cbb8c42c6,
@@ -248,6 +301,48 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.3135619, y: 1.6765783}
   m_EdgeRadius: 0
+--- !u!1 &1681948530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1681948532}
+  - component: {fileID: 1681948531}
+  m_Layer: 8
+  m_Name: Fire
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1681948531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1681948530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7346205e921107e47894cb8b389943e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireballPrefab: {fileID: 114221505143353494, guid: 6ce6aa3a2c7ae344795bcae67c31e9bd,
+    type: 2}
+--- !u!4 &1681948532
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1681948530}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.1, y: 2.1, z: 2}
+  m_LocalScale: {x: 0.8, y: 0.8000001, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1853073695
 Prefab:
   m_ObjectHideFlags: 0
@@ -342,7 +437,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

@@ -8,9 +8,14 @@ public class FireBall : Spell, ISpell {
         damage = 10f;
 	}
 
-    public float GetDamage()
+    public new float GetDamage()
     {
         return damage;
+    }
+
+    public string GetName()
+    {
+        return "FireBall";
     }
 
     public static void Cast(Vector3 pos, float axiX, float axiY, bool righe, GameObject f)
@@ -38,7 +43,7 @@ public class FireBall : Spell, ISpell {
         if (collision.IsTouchingLayers(layer))
         {
             collision.GetComponentInParent<IKillable>().TakeDamage(damage);
-            if (this.GetComponent<SpriteRenderer>().flipX)
+            if (this.transform.eulerAngles.z == 180f)
             {
                 force = new Vector2(-200f, 0);
             }else

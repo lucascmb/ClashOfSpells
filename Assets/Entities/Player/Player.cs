@@ -10,7 +10,7 @@ public class Player : PlayerBehaviour, IKillable
     private bool dashing = false; // a boolean to check if the player is dashing or not
     private bool isJumping = false; // a boolean to check if the player is jumping or not
     private bool isFalling = false; // a boolean to check if the player is falling or not
-    private bool push = false; // a boolean to check if the player is in time to next action in order to cast the fireball
+    private bool castingFireball = false; // a boolean to check if the player is in time to next action in order to cast the fireball
 
     private float dashCoolDown; // the cooldown's value for the dash
     private float dashValue; // the dash speed value
@@ -20,8 +20,8 @@ public class Player : PlayerBehaviour, IKillable
     private SpriteRenderer sr; // player's sprite rendering
     private Animator anim; // player's animator
 
-    public GameObject [] spellSet;  // all the spells available in the game
-    private Dictionary<string, GameObject> spells;  // all the spells that was chosen by the player
+    public IElements [] elementsSet;  // all the elements available in the game
+    private Dictionary<string, IElements> spells;  // all the elements that was chosen by the player
 
     public float autoVel; // the maximum velocity that the player can reach just walking
     public float dashSpeed = 2f; // the multiplier from dash
@@ -30,28 +30,19 @@ public class Player : PlayerBehaviour, IKillable
 
     void Start()
     {
-        spells = new Dictionary<string, GameObject>();
-        for (int i = 0; i < spellSet.Length; i++)
-        {
-            try
-            {
-                spells.Add(spellSet[i].name, spellSet[i]);
-            }
-            catch (System.NullReferenceException)
-            {
-                Debug.Log("FAILLED");
-            }
-        }
         rb = this.GetComponent<Rigidbody2D>();
         sr = this.GetComponent<SpriteRenderer>();
         anim = this.GetComponent<Animator>();
+
+        elementsSet = new IElements[2];
+        spells = new Dictionary<string, IElements>();
     }
 
     void Update()
     {
         HorizontalMovement();
         VerticalMovement();
-        CheckSpell();
+        //CheckSpell();
         Attack();
     }
 
@@ -181,7 +172,7 @@ public class Player : PlayerBehaviour, IKillable
         anim.SetBool("falling", true);
     }
 
-    void CheckSpell()
+    /*void CheckSpell()
     {
         if (Input.GetAxis("Vertical") < -0.95f)
         {
@@ -194,23 +185,23 @@ public class Player : PlayerBehaviour, IKillable
         {
             if(spellTime > Time.time)
             {
-                push = true;
+                castingFireball = true;
             }
         }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button1) && spellTime > Time.time && push && !attacking)
+        if (Input.GetKeyDown(KeyCode.Joystick1Button1) && spellTime > Time.time && castingFireball && !attacking)
         {
             GameObject s;
             spells.TryGetValue("Fireball", out s);
-            push = false;
+            castingFireball = false;
             spellTime = 0f;
 
             FireBall.Cast(this.transform.position, Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), righe, s);
         }
-    }
+    }*/
 
     void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Joystick1Button2) && anim.GetFloat("down") <= 0 && !dashing)
+        if (Input.GetKeyDown(KeyCode.Joystick1Button2) && anim.GetFloat("down") <= 0 && !dashing && !attacking)
         {
             attacking = true;
             anim.SetBool("attacking", true);
@@ -226,7 +217,6 @@ public class Player : PlayerBehaviour, IKillable
 
     void SetAttackOff()
     {
-        attacking = false;
         anim.SetBool("attacking", false);
         if (this.transform.GetChild(3).gameObject.activeSelf)
         {
@@ -235,13 +225,14 @@ public class Player : PlayerBehaviour, IKillable
         {
             this.transform.GetChild(4).gameObject.SetActive(false);
         }
+        attacking = false;
     }
 
     public void Death()
     {
         if(life <= 0)
         {
-            print("Death");
+            //
         }
     }
 
