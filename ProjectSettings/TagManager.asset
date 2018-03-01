@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Select
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - 
   - Killable
   - Projectile
-  - 
+  - Stars
   - 
   - 
   - 
@@ -40,4 +41,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1138886283
+    locked: 0
+  - name: Effects
+    uniqueID: 978930931
+    locked: 0
+  - name: Card
+    uniqueID: 195526771
+    locked: 0
+  - name: Elements
+    uniqueID: 3074169929
+    locked: 0
+  - name: Player
+    uniqueID: 1419154727
+    locked: 0
+  - name: Grass
+    uniqueID: 1449729051
     locked: 0

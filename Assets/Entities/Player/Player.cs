@@ -4,24 +4,23 @@ using UnityEngine;
 
 public class Player : PlayerBehaviour, IKillable
 {
-
+    private int index; // the players' index for joystick management
+    private bool active; // identify if the players is available for movements and actions or not
 
     private bool attacking = false; // a boolean to check if the player is attacking or not
     private bool dashing = false; // a boolean to check if the player is dashing or not
     private bool isJumping = false; // a boolean to check if the player is jumping or not
     private bool isFalling = false; // a boolean to check if the player is falling or not
-    private bool castingFireball = false; // a boolean to check if the player is in time to next action in order to cast the fireball
+    private bool animated = false; // a boolean to check if the player is on an animation
 
     private float dashCoolDown; // the cooldown's value for the dash
     private float dashValue; // the dash speed value
-    private float spellTime = 0f; // the time that the player has end the spell casting from the beginning of it casts;
 
     private Rigidbody2D rb; // player's rigidibody
     private SpriteRenderer sr; // player's sprite rendering
     private Animator anim; // player's animator
 
-    public IElements [] elementsSet;  // all the elements available in the game
-    private Dictionary<string, IElements> spells;  // all the elements that was chosen by the player
+    public IElements [] elementsSet;  // the element's choosen by the player
 
     public float autoVel; // the maximum velocity that the player can reach just walking
     public float dashSpeed = 2f; // the multiplier from dash
@@ -30,20 +29,28 @@ public class Player : PlayerBehaviour, IKillable
 
     void Start()
     {
+        active = false;
+
         rb = this.GetComponent<Rigidbody2D>();
         sr = this.GetComponent<SpriteRenderer>();
         anim = this.GetComponent<Animator>();
 
+        index = MenuController.GetIndex();
         elementsSet = new IElements[2];
-        spells = new Dictionary<string, IElements>();
     }
 
     void Update()
     {
-        HorizontalMovement();
-        VerticalMovement();
-        //CheckSpell();
-        Attack();
+        if (active && !animated)
+        {
+            HorizontalMovement();
+            VerticalMovement();
+            Attack();
+        }
+        else if (animated)
+        {
+            Drained();
+        }
     }
 
     void HorizontalMovement()
@@ -51,25 +58,25 @@ public class Player : PlayerBehaviour, IKillable
 
         if (anim.GetFloat("down") <= 0)
         {
-            if (Input.GetAxisRaw("Horizontal") > 0.2f && !dashing)
+            if (Input.GetAxisRaw("Horizontal" + index.ToString()) > 0.2f && !dashing)
             {
-                rb.velocity = new Vector2(autoVel * Input.GetAxisRaw("Horizontal"), rb.velocity.y);
+                rb.velocity = new Vector2(autoVel * Input.GetAxisRaw("Horizontal" + index.ToString()), rb.velocity.y);
                 anim.SetFloat("walking", 2);
                 sr.flipX = false;
                 setRightCollider();
             }
-            else if (Input.GetAxisRaw("Horizontal") < -0.2f && !dashing)
+            else if (Input.GetAxisRaw("Horizontal" + index.ToString()) < -0.2f && !dashing)
             {
-                rb.velocity = new Vector2(autoVel * Input.GetAxisRaw("Horizontal"), rb.velocity.y);
+                rb.velocity = new Vector2(autoVel * Input.GetAxisRaw("Horizontal" + index.ToString()), rb.velocity.y);
                 anim.SetFloat("walking", 4);
                 sr.flipX = true;
                 setLeftCollider();
             }
             else if (!dashing)
             {
-                Stop();
+                StopDashing();
             }
-            if ((Input.GetKeyDown(KeyCode.Joystick1Button5) || Input.GetKeyDown(KeyCode.Joystick1Button4)) && 
+            if ((Input.GetButtonDown("Dash" + index.ToString())) && 
                 Time.time > dashCoolDown && 
                 !attacking)
             {
@@ -80,7 +87,6 @@ public class Player : PlayerBehaviour, IKillable
         }
     }
 
-
     IEnumerator Dashing()
     {
         if (!dashing)
@@ -89,15 +95,15 @@ public class Player : PlayerBehaviour, IKillable
             dashValue = Time.time + dashSpeed;
             dashValue = dashValue - Time.time;
 
-            Vector2 mov = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            Vector2 mov = new Vector2(Input.GetAxisRaw("Horizontal" + index.ToString()), Input.GetAxisRaw("Vertical" + index.ToString()));
             mov.Normalize();
             rb.velocity = mov * dashValue * autoVel;
         }
         yield return new WaitForSeconds(.4f);
-        Stop();
+        StopDashing();
     }
 
-    void Stop()
+    void StopDashing()
     {
         if (dashing)
         {
@@ -115,7 +121,7 @@ public class Player : PlayerBehaviour, IKillable
         {
             if(anim.GetFloat("down") <= 0)
             {
-                if (Input.GetKeyDown(KeyCode.Joystick1Button0))
+                if (Input.GetButtonDown("Jump" + index.ToString()))
                 {
                     rb.velocity = new Vector2(this.GetComponent<Rigidbody2D>().velocity.x, 6f);
                     anim.SetBool("jumping", true);
@@ -125,7 +131,7 @@ public class Player : PlayerBehaviour, IKillable
                 }
             }
 
-            if (Input.GetAxisRaw("Vertical") < -0.95f)
+            if (Input.GetAxisRaw("Vertical" + index.ToString()) < -0.95f)
             {
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 anim.SetFloat("walking", 0);
@@ -133,7 +139,7 @@ public class Player : PlayerBehaviour, IKillable
                 setDownCollider();
             }
 
-            else if (Input.GetAxisRaw("Vertical") > -0.95f)
+            else if (Input.GetAxisRaw("Vertical" + index.ToString()) > -0.95f)
             {
                 anim.SetFloat("down", -1);
                 if (sr.flipX == false) { setRightCollider(); }
@@ -172,36 +178,9 @@ public class Player : PlayerBehaviour, IKillable
         anim.SetBool("falling", true);
     }
 
-    /*void CheckSpell()
-    {
-        if (Input.GetAxis("Vertical") < -0.95f)
-        {
-            if(spellTime < Time.time)
-            {
-                spellTime = Time.time + 0.3f;
-            }
-        }
-        if (Input.GetAxis("Horizontal") > 0.95f || Input.GetAxis("Horizontal") < -0.95f)
-        {
-            if(spellTime > Time.time)
-            {
-                castingFireball = true;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Joystick1Button1) && spellTime > Time.time && castingFireball && !attacking)
-        {
-            GameObject s;
-            spells.TryGetValue("Fireball", out s);
-            castingFireball = false;
-            spellTime = 0f;
-
-            FireBall.Cast(this.transform.position, Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), righe, s);
-        }
-    }*/
-
     void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Joystick1Button2) && anim.GetFloat("down") <= 0 && !dashing && !attacking)
+        if (Input.GetButtonDown("Attack" + index.ToString()) && anim.GetFloat("down") <= 0 && !dashing && !attacking)
         {
             attacking = true;
             anim.SetBool("attacking", true);
@@ -249,5 +228,61 @@ public class Player : PlayerBehaviour, IKillable
     public void Recoil(Vector2 force)
     {
         //
+    }
+
+    public void Active() // Active or Desactive the player for actions and movements
+    {
+        if (!active)
+        {
+            active = true;
+        }
+        else
+        {
+            active = false;
+        }
+    }
+
+    // All the methods below are just for animations 
+
+    public void ChangeAniamtion(string name, bool value)
+    {
+        anim.SetBool(name, value);
+    }
+
+    public void Portal()
+    {
+        active = false;
+        animated = true;
+        setAllCollidersOff();
+    }
+
+    public void HideElements()
+    {
+        elementsSet = transform.GetComponentsInChildren<IElements>();
+        foreach (IElements element in elementsSet)
+        {
+            element.Off();
+        }
+    }
+
+    private void Drained()
+    {
+        foreach (IElements element in elementsSet)
+        {
+            element.Off();
+        }
+        StartCoroutine(Draining());
+    }
+
+    IEnumerator Draining()
+    {
+        Vector2 distance = new Vector3(0f, 0, 0) - new Vector3(transform.position.x, transform.position.y);
+        distance.Normalize();
+        this.rb.velocity = distance * 4;
+        if ((transform.position.x >= -0.1f && transform.position.x <= 0.1f) && (transform.position.y >= -0.1f && transform.position.y <= 0.1f))
+        {
+            anim.SetBool("drained", true);
+            yield return null;
+        }
     }
 }
