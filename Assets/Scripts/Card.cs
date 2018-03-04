@@ -33,14 +33,12 @@ public class Card : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        player = Instantiate(playerPrefab, this.transform.position, Quaternion.identity, this.transform );
+        fire = Instantiate(fireElement, new Vector3 (this.transform.position.x - 0.8f, (7.1f - 10f), 0f), Quaternion.identity, this.transform);
+        land = Instantiate(landElement, new Vector3 (this.transform.position.x + 0.8f, (7.1f - 10f), 0f), Quaternion.identity, this.transform);
+        air = Instantiate(airElement, new Vector3(this.transform.position.x - 0.8f, (6.1f - 10f), 0f), Quaternion.identity, this.transform);
+        water = Instantiate(waterElement, new Vector3(this.transform.position.x + 0.8f, (6.1f - 10f), 0f), Quaternion.identity, this.transform);
 
-        fire = Instantiate(fireElement, new Vector3 (this.transform.position.x - 0.8f, 7.1f, 0f), Quaternion.identity, this.transform);
-        land = Instantiate(landElement, new Vector3 (this.transform.position.x + 0.8f, 7.1f, 0f), Quaternion.identity, this.transform);
-        air = Instantiate(airElement, new Vector3(this.transform.position.x - 0.8f, 6.1f, 0f), Quaternion.identity, this.transform);
-        water = Instantiate(waterElement, new Vector3(this.transform.position.x + 0.8f, 6.1f, 0f), Quaternion.identity, this.transform);
-
-        select = Instantiate(selectPrefab, new Vector3(this.transform.position.x - 0.8f, 7.4f, 0f), Quaternion.identity, this.transform);
+        select = Instantiate(selectPrefab, new Vector3(this.transform.position.x - 0.8f, (7.1f - 10f), 0f), Quaternion.identity, this.transform);
 
         cardAnimator = GetComponent<Animator>();
         players = FindObjectOfType<Players>();
@@ -55,16 +53,20 @@ public class Card : MonoBehaviour {
         ChoiceElement();
 	}
 
+    void SetReady()
+    {
+        cardAnimator.SetBool("ready", true);
+    }
+
     void ChoiceElement()
     {
         if(stage == Stage.preparing)
         {
-            transform.position += new Vector3(0f, -8 * Time.deltaTime, 0f);
-
-            if(transform.position.y <= 0)
+            if(transform.localScale.x == 1 && transform.localScale.y == 1)
             {
-                transform.position = new Vector3(transform.position.x, 0f, transform.position.y);
+                transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
                 stage = Stage.choosingElement1;
+                player = Instantiate(playerPrefab, this.transform.position, Quaternion.identity, this.transform);
             }
         }
 
@@ -133,13 +135,13 @@ public class Card : MonoBehaviour {
             if (Input.GetButtonDown("Start" + index.ToString()))
             {
                 stage = Stage.go;
-                player.transform.SetParent(players.transform);
                 player.HideElements();
             }
         }
         else if (stage == Stage.go)
         {
             player.Portal();
+            player.transform.SetParent(players.transform);
             transform.position += new Vector3(0f, -8 * Time.deltaTime, 0f);
 
             if (transform.position.y <= -10)

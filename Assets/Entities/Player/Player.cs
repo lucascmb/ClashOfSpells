@@ -276,10 +276,10 @@ public class Player : PlayerBehaviour, IKillable
 
     IEnumerator Draining()
     {
-        Vector2 distance = new Vector3(0f, 0, 0) - new Vector3(transform.position.x, transform.position.y);
+        Vector2 distance = new Vector3(transform.parent.position.x, transform.parent.position.y, 0) - new Vector3(transform.position.x, transform.position.y);
         distance.Normalize();
         this.rb.velocity = distance * 4;
-        if ((transform.position.x >= -0.1f && transform.position.x <= 0.1f) && (transform.position.y >= -0.1f && transform.position.y <= 0.1f))
+        if ((transform.parent.parent.position.x >= -0.1f && transform.parent.parent.position.x <= 0.1f) && (transform.parent.parent.position.y >= -0.1f && transform.parent.parent.position.y <= 0.1f))
         {
             anim.SetBool("drained", true);
             yield return null;

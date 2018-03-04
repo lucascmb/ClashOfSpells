@@ -95,7 +95,6 @@ public class MenuController : MonoBehaviour {
 
             DontDestroyOnLoad(players);
             SceneManager.LoadScene("Level_01");
-
         }
     }
 }

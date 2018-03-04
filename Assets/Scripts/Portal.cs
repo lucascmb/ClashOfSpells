@@ -15,6 +15,6 @@ public class Portal : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        pe.rateOverTimeMultiplier = pe.rateOverTimeMultiplier + 5f;
+        pe.rateOverTimeMultiplier = pe.rateOverTimeMultiplier + 20f;
 	}
 }
