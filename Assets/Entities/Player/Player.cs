@@ -2,30 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : PlayerBehaviour, IKillable
+public class Player : PlayerMethods, IKillable
 {
-    private int index; // the players' index for joystick management
+    public int index; // the players' index for joystick management
     private bool active; // identify if the players is available for movements and actions or not
-
+    private bool readyForBattle = false; // identify if the players is available for the battle or not
     private bool attacking = false; // a boolean to check if the player is attacking or not
     private bool dashing = false; // a boolean to check if the player is dashing or not
     private bool isJumping = false; // a boolean to check if the player is jumping or not
     private bool isFalling = false; // a boolean to check if the player is falling or not
-    private bool animated = false; // a boolean to check if the player is on an animation
 
     private float dashCoolDown; // the cooldown's value for the dash
     private float dashValue; // the dash speed value
 
     private Rigidbody2D rb; // player's rigidibody
     private SpriteRenderer sr; // player's sprite rendering
-    private Animator anim; // player's animator
 
-    public IElements [] elementsSet;  // the element's choosen by the player
+    public IElements[] elementsSet;  // the element's choosen by the player
 
     public float autoVel; // the maximum velocity that the player can reach just walking
     public float dashSpeed = 2f; // the multiplier from dash
 
     public float meleeDamage = 2f; // the damage that the player do when it is attacking with its sword;
+
+    private Vector3 posForAnimation;
+    private Position menuPosition;
 
     void Start()
     {
@@ -36,6 +37,7 @@ public class Player : PlayerBehaviour, IKillable
         anim = this.GetComponent<Animator>();
 
         index = MenuController.GetIndex();
+        print(index);
         elementsSet = new IElements[2];
     }
 
@@ -49,7 +51,7 @@ public class Player : PlayerBehaviour, IKillable
         }
         else if (animated)
         {
-            Drained();
+            Draining();
         }
     }
 
@@ -76,8 +78,8 @@ public class Player : PlayerBehaviour, IKillable
             {
                 StopDashing();
             }
-            if ((Input.GetButtonDown("Dash" + index.ToString())) && 
-                Time.time > dashCoolDown && 
+            if ((Input.GetButtonDown("Dash" + index.ToString())) &&
+                Time.time > dashCoolDown &&
                 !attacking)
             {
                 dashCoolDown = Time.time + 2f;
@@ -119,11 +121,11 @@ public class Player : PlayerBehaviour, IKillable
     {
         if (!isJumping)
         {
-            if(anim.GetFloat("down") <= 0)
+            if (anim.GetFloat("down") <= 0)
             {
                 if (Input.GetButtonDown("Jump" + index.ToString()))
                 {
-                    rb.velocity = new Vector2(this.GetComponent<Rigidbody2D>().velocity.x, 6f);
+                    rb.velocity = new Vector2(this.GetComponent<Rigidbody2D>().velocity.x, 8f);
                     anim.SetBool("jumping", true);
                     anim.SetBool("falling", false);
                     isJumping = true;
@@ -162,7 +164,8 @@ public class Player : PlayerBehaviour, IKillable
                 anim.SetBool("falling", true);
             }
         }
-        if (isFalling) { 
+        if (isFalling)
+        {
             if (rb.velocity.y > -0.2f)
             {
                 isFalling = false;
@@ -180,14 +183,15 @@ public class Player : PlayerBehaviour, IKillable
 
     void Attack()
     {
-        if (Input.GetButtonDown("Attack" + index.ToString()) && anim.GetFloat("down") <= 0 && !dashing && !attacking)
+        if (Input.GetButtonDown("Attack" + index.ToString()) && anim.GetFloat("down") <= 0 && !dashing && !attacking && !anim.GetBool("attacking"))
         {
             attacking = true;
             anim.SetBool("attacking", true);
             if (righe)
             {
                 this.transform.GetChild(3).gameObject.SetActive(true);
-            }else
+            }
+            else
             {
                 this.transform.GetChild(4).gameObject.SetActive(true);
             }
@@ -197,19 +201,24 @@ public class Player : PlayerBehaviour, IKillable
     void SetAttackOff()
     {
         anim.SetBool("attacking", false);
+
         if (this.transform.GetChild(3).gameObject.activeSelf)
         {
             this.transform.GetChild(3).gameObject.SetActive(false);
-        } else if (this.transform.GetChild(4).gameObject.activeSelf)
+
+        }
+
+        else if (this.transform.GetChild(4).gameObject.activeSelf)
         {
             this.transform.GetChild(4).gameObject.SetActive(false);
         }
+
         attacking = false;
     }
 
     public void Death()
     {
-        if(life <= 0)
+        if (life <= 0)
         {
             //
         }
@@ -249,13 +258,6 @@ public class Player : PlayerBehaviour, IKillable
         anim.SetBool(name, value);
     }
 
-    public void Portal()
-    {
-        active = false;
-        animated = true;
-        setAllCollidersOff();
-    }
-
     public void HideElements()
     {
         elementsSet = transform.GetComponentsInChildren<IElements>();
@@ -265,24 +267,50 @@ public class Player : PlayerBehaviour, IKillable
         }
     }
 
-    private void Drained()
+    public void ShowElements()
     {
         foreach (IElements element in elementsSet)
         {
-            element.Off();
+            element.PrepareForBattle();
+            element.On();
         }
-        StartCoroutine(Draining());
     }
 
-    IEnumerator Draining()
+    public void SetAvailable()
     {
-        Vector2 distance = new Vector3(transform.parent.position.x, transform.parent.position.y, 0) - new Vector3(transform.position.x, transform.position.y);
-        distance.Normalize();
-        this.rb.velocity = distance * 4;
-        if ((transform.parent.parent.position.x >= -0.1f && transform.parent.parent.position.x <= 0.1f) && (transform.parent.parent.position.y >= -0.1f && transform.parent.parent.position.y <= 0.1f))
+        MenuController.AddPlayersAvailable();
+        anim.SetBool("drained", false);
+        active = true;
+        animated = false;
+        setRightCollider();
+    }
+
+    public void PrepareForBattle()
+    {
+        transform.localRotation = Quaternion.Euler(0, 0, 0);
+        transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+        foreach (Transform child in transform)
         {
-            anim.SetBool("drained", true);
-            yield return null;
+            child.gameObject.layer = (16);
+
         }
+
+        gameObject.layer = 16;
+
+        On();
+    }
+
+    public void ChangeLayer(int num)
+    {
+        Transform parent = transform;
+        int layer = 15 + num;
+
+        foreach (Transform child in parent)
+        {
+            child.gameObject.layer = (layer);
+        }
+
+        gameObject.layer = layer;
     }
 }

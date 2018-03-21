@@ -6,4 +6,8 @@ public interface IElements {
 
     string GetName();
     void Off();
+    void On();
+    void DisableCollisions();
+    void PrepareForBattle();
+    Transform GetTransform();
 }

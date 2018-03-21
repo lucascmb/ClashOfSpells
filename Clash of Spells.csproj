@@ -282,7 +282,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CardBackground.cs" />
     <Compile Include="Assets\Entities\Player\Player.cs" />
+    <Compile Include="Assets\PlayerCamera.cs" />
     <Compile Include="Assets\Position.cs" />
     <Compile Include="Assets\Scripts\Air.cs" />
     <Compile Include="Assets\Scripts\Card.cs" />
@@ -298,6 +300,7 @@
     <Compile Include="Assets\Scripts\MenuController.cs" />
     <Compile Include="Assets\Scripts\PlayerAttackTrigger.cs" />
     <Compile Include="Assets\Scripts\PlayerBehaviour.cs" />
+    <Compile Include="Assets\Scripts\PlayerMethods.cs" />
     <Compile Include="Assets\Scripts\Players.cs" />
     <Compile Include="Assets\Scripts\Portal.cs" />
     <Compile Include="Assets\Scripts\Puppet.cs" />

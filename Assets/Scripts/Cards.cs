@@ -22,7 +22,7 @@ public class Cards : MonoBehaviour {
     
     public void InstantiateCard(int position)
     {
-        GameObject.Instantiate(cardPrefab, new Vector3((2.25f + (position * 4.5f)) - 9, 0, -5f), Quaternion.identity, this.transform.GetChild(position));
+        GameObject.Instantiate(cardPrefab, transform.GetChild(position).position, Quaternion.identity, this.transform.GetChild(position));
         numberOfCards++;
     }
 }

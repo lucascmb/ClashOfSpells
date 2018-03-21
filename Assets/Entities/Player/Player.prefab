@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4210883484125948}
   - component: {fileID: 61249378657042840}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: ColliderRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4565588972784240}
   - component: {fileID: 61880340084917018}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: ColliderLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   - component: {fileID: 68947160749647900}
   - component: {fileID: 68361528966585298}
   - component: {fileID: 114496883314220488}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: AttackRightTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4145011120882220}
   - component: {fileID: 60883888627632502}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: ColliderCrouched
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,8 +88,9 @@ GameObject:
   - component: {fileID: 212436271946000496}
   - component: {fileID: 50878782238533982}
   - component: {fileID: 114242202595698874}
+  - component: {fileID: 114039032182782848}
   - component: {fileID: 95142369418163914}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -107,7 +108,7 @@ GameObject:
   - component: {fileID: 68180968827388788}
   - component: {fileID: 68326847837129984}
   - component: {fileID: 114043422542307896}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: AttackLeftTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,6 +418,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114039032182782848
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1817940485600002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a55c03fa0be8974fa1977da33eceab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114043422542307896
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -486,7 +498,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1220797367
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e491cce00c8855e45a144436a1335dd3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

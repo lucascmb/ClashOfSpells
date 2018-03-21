@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PlayerBehaviour : MonoBehaviour {
-
-    public float life;
-    protected bool righe = false;
+public class PlayerBehaviour : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
@@ -17,49 +14,27 @@ public abstract class PlayerBehaviour : MonoBehaviour {
 		
 	}
 
-    protected void setDownCollider()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        this.transform.GetChild(1).gameObject.SetActive(false);
-        this.transform.GetChild(0).gameObject.SetActive(false);
-        this.transform.GetChild(2).gameObject.SetActive(true);
+        if(collision.tag == "Map")
+        {
+            Transform parent = transform;
+
+            foreach(Transform child in parent)
+            {
+                child.gameObject.layer = 13;
+            }
+        }
     }
 
-    protected void setRightCollider()
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        this.transform.GetChild(1).gameObject.SetActive(false);
-        this.transform.GetChild(0).gameObject.SetActive(true);
-        this.transform.GetChild(2).gameObject.SetActive(false);
-        righe = true;
-    }
+        Transform parent = transform;
 
-    protected void setLeftCollider()
-    {
-        this.transform.GetChild(1).gameObject.SetActive(true);
-        this.transform.GetChild(0).gameObject.SetActive(false);
-        this.transform.GetChild(2).gameObject.SetActive(false);
-        righe = false;
-    }
-
-    protected void setAllCollidersOff()
-    {
-        this.transform.GetChild(1).gameObject.SetActive(false);
-        this.transform.GetChild(0).gameObject.SetActive(false);
-        this.transform.GetChild(2).gameObject.SetActive(false);
-    }
-
-    void On()
-    {
-        gameObject.SetActive(true);
-    }
-
-    void Off()
-    {
-        gameObject.SetActive(false);
-    }
-
-    public void SetAvailable()
-    {
-        MenuController.AddPlayersAvailable();
+        foreach (Transform child in parent)
+        {
+            child.gameObject.layer = 12;
+        }
     }
 
 }

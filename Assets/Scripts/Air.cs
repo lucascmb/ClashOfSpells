@@ -9,6 +9,7 @@ public class Air : MonoBehaviour, IElements {
     private bool flip;
     private float time = 0f;
 
+    private Player player;
 
     private bool selected;
 
@@ -90,7 +91,7 @@ public class Air : MonoBehaviour, IElements {
         {
             selected = true;
             flip = false;
-            transform.localScale = new Vector3(1.3f, 1.3f, 1);
+            //transform.localScale = new Vector3(1.3f, 1.3f, 1);
             sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 255f);
             sr.flipX = false;
         }
@@ -99,5 +100,25 @@ public class Air : MonoBehaviour, IElements {
     public void Off()
     {
         this.gameObject.SetActive(false);
+    }
+
+    public void On()
+    {
+        this.gameObject.SetActive(true);
+    }
+
+    public void DisableCollisions()
+    {
+        GetComponent<Collider2D>().enabled = false;
+    }
+
+    public void PrepareForBattle()
+    {
+        transform.position = new Vector2(player.index, 0.5f);
+    }
+
+    public Transform GetTransform()
+    {
+        return transform;
     }
 }

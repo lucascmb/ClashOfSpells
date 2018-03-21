@@ -9,6 +9,8 @@ public class Land : MonoBehaviour, IElements {
     private bool flip;
     private float time = 0f;
 
+    private Player player;
+
     private bool selected;
 
 
@@ -97,5 +99,25 @@ public class Land : MonoBehaviour, IElements {
     public void Off()
     {
         this.gameObject.SetActive(false);
+    }
+
+    public void On()
+    {
+        this.gameObject.SetActive(true);
+    }
+
+    public void DisableCollisions()
+    {
+        GetComponent<Collider2D>().enabled = false;
+    }
+
+    public void PrepareForBattle()
+    {
+        transform.position = new Vector2(player.index, 0.5f);
+    }
+
+    public Transform GetTransform()
+    {
+        return transform;
     }
 }

@@ -9,6 +9,7 @@ public class Water : MonoBehaviour, IElements {
     private bool flip;
     private float time = 0f;
 
+    private Player player;
 
     private bool selected;
 
@@ -54,23 +55,13 @@ public class Water : MonoBehaviour, IElements {
 
     void FlipActive()
     {
-        if (!flip)
-        {
-            flip = true;
-            transform.localScale = new Vector3(1.3f, 1.3f, 1);
-            sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 255f);
-        }
-        else
-        {
-            flip = false;
-            transform.localScale = new Vector3(1f, 1f, 1);
-            sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 0.5f);
-        }
+        flip = true;
+        sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 255f);
     }
 
     void FlipAnimation()
     {
-        if (flip && Time.time > time)
+       if (flip && Time.time > time)
         {
             if (sr.flipX)
             {
@@ -90,7 +81,6 @@ public class Water : MonoBehaviour, IElements {
         {
             selected = true;
             flip = false;
-            transform.localScale = new Vector3(1.3f, 1.3f, 1);
             sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 255f);
             sr.flipX = false;
         }
@@ -99,5 +89,24 @@ public class Water : MonoBehaviour, IElements {
     public void Off()
     {
         this.gameObject.SetActive(false);
+    }
+
+    public void On()
+    {
+        this.gameObject.SetActive(true);
+    }
+
+    public void DisableCollisions()
+    {
+        GetComponent<Collider2D>().enabled = false;
+    }
+
+    public void PrepareForBattle()
+    {
+    }
+
+    public Transform GetTransform()
+    {
+        return transform;
     }
 }

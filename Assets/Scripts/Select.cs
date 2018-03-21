@@ -14,5 +14,6 @@ public class Select : MonoBehaviour {
     public void SetTransform(Player player)
     {
         go.transform.SetParent(player.transform);
+        go.GetComponent<IElements>().DisableCollisions();
     }
 }

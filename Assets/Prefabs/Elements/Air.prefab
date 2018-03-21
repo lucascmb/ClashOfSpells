@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114147439064883986}
   - component: {fileID: 60887773903552652}
   - component: {fileID: 50734341639069704}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Air
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -145,8 +145,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1220797367
-  m_SortingLayer: 4
+  m_SortingLayerID: 773391203
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300006, guid: 4ef8fee24edbc73429355980c8c85061, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.5}

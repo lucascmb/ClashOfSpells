@@ -16,5 +16,8 @@ public class Portal : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         pe.rateOverTimeMultiplier = pe.rateOverTimeMultiplier + 20f;
-	}
+        //this.transform.RotateAround(transform.position, Vector3.right, 10 * Time.deltaTime);
+        //this.transform.RotateAround(transform.position, Vector3.up, 10 * Time.deltaTime);
+        this.transform.RotateAround(transform.position, Vector3.forward, 400 * Time.deltaTime);
+    }
 }
